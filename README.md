@@ -1,50 +1,48 @@
+## 1. Title
+All you need is love... and a good che
 
-# Your project name
-This is a template repo for your project to help you organise and document your code better. 
-Please use this structure for your project and document the installation, usage and structure as below.
+## 2.  Abstract
+Not only humans live their life in couples but also chemical compounds. However, couple life reserves some risks, in particular bound to infections. Emblematically, sexually transmitted infections and subsequent diseases (STDs) are a representative example of this, such that the World Health Organisation still recognises them as a prominent problem, integrating its solving in 2030 agenda purposes [1]. 
+With this project we are keen to see how “couples” in the chemical domain counteract this problem, helping human couples to live healthier. Thus, we would like to trace development of the drugs against STDs, with a particular focus on HIV, and try to depict the main changes in drug affinity over time. Therefore, we seek to find similarities in the ligands that can better predict affinity to give a general hint on the enormous potential that chemical bindings have to pursue this aim.   
 
-## Quickstart
-
-```bash
-# clone project
-git clone <project link>
-cd <project repo>
-
-# [OPTIONAL] create conda environment
-conda create -n <env_name> python=3.11 or ...
-conda activate <env_name>
+References
+[1] https://www.who.int/publications/i/item/9789240053779
 
 
-# install requirements
-pip install -r pip_requirements.txt
-```
+## 3. Research Questions
 
 
 
-### How to use the library
-Tell us how the code is arranged, any explanations goes here.
+## 4. Proposed dataset
 
 
 
-## Project Structure
+## 5. Methods
 
-The directory structure of new project looks like this:
+    
 
-```
-├── data                        <- Project data files
-│
-├── src                         <- Source code
-│   ├── data                            <- Data directory
-│   ├── models                          <- Model directory
-│   ├── utils                           <- Utility directory
-│   ├── scripts                         <- Shell scripts
-│
-├── tests                       <- Tests of any kind
-│
-├── results.ipynb               <- a well-structured notebook showing the results
-│
-├── .gitignore                  <- List of files ignored by git
-├── pip_requirements.txt        <- File for installing python dependencies
-└── README.md
-```
+
+  
+
+## 6. Proposed timeline 
+ 
+**Week 12:** Reviewing our exploration time-wise to create a timeline of the evolution of drug discovery on sexually transmitted diseases. (1) Analysis of the past evolution of drug discovery finding statistically relevant information. (2) Analysis and comparison with the present state-of-art of drug discovery. If possible and achievable, we could also include a comparison among sexually transmitted diseases. Introducing the quests to durg discovery for the future.  
+
+
+**Week 13:** Devising the data story from the analyses such that it is aligned with our research question and explorative finding and begging the webpage
+
+**Week 14:** Wrapping up the data story webpage, host cohesive and interactive visualizations to display our outcome in an interesting and engaging fashion.  
+  
+
+## 7. Organization within the team
+
+**Mattia**: Project of the interactive part for the investigation for the future discoveries. Creation of the format to display it in the webpage  
+
+**Federico**: Analysis of the actual drug discovery and comparison with the past one.
+
+**Simone**: Analysis of the drug discovery in the past, retrieving interesting features to make confrontations.
+
+**Leonor**: Creativity ideation of the webpage format. 
+
+**Elisa**: Creativity ideation of the webpage format.  
 
