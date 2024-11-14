@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"]):
+def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"], ax=None):
     """
     Cleans the data by converting threshold values (e.g., '>50000', '<1') to NaN, calculates, 
     and plots the distribution of rows with defined values for each specified metric.
@@ -11,6 +11,7 @@ def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC
     Parameters:
     - df (pd.DataFrame): The BindingDB DataFrame containing the metrics.
     - metrics (list of str): List of metric columns to analyze.
+    - ax (matplotlib.axes._subplots.AxesSubplot): Axis on which to plot, if provided.
     
     Returns:
     - pd.DataFrame: A DataFrame with the count and percentage of rows with non-NaN values for each metric.
@@ -35,11 +36,96 @@ def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC
     })
     
     # Plot the availability distribution as a bar chart
-    plt.figure(figsize=(8, 6))
-    plt.bar(availability_df["Metric"], availability_df["Percentage"], color="skyblue")
-    plt.title("Availability of Each Metric in BindingDB")
-    plt.xlabel("Metric")
-    plt.ylabel("Percentage of Rows with Defined Values")
-    plt.ylim(0, 100)
-    plt.show()
+    if ax is None:
+        ax = plt.gca()
+    ax.bar(availability_df["Metric"], availability_df["Percentage"], color="skyblue")
+    ax.set_title("Availability of Each Metric in BindingDB")
+    ax.set_xlabel("Metric")
+    ax.set_ylabel("Percentage of Rows with Defined Values")
+    ax.set_ylim(0, 100)
     
+
+def plot_overlap_matrix(df, columns=['Ki (nM)', 'IC50 (nM)', 'Kd (nM)', 'EC50 (nM)'], ax=None):
+    ### let's see the overlap in the dataframe columns (metric columns are set as default)  
+
+    # create an overlap matrix to compare the metrics
+    overlap_matrix = pd.DataFrame(index=columns, columns=columns, dtype=float)
+
+    # calculating pairwise overlaps as percentages
+    for col1 in columns:
+        for col2 in columns:
+            # count non null values in both columns (overlap)
+            overlap = df[col1].notnull() & df[col2].notnull()
+            ## calculate overlap percentage relative to the average non-null counts in col1 and col2 for symmetry
+            overlap_percentage = overlap.sum() / ((df[col1].notnull().sum() + df[col2].notnull().sum()) / 2) * 100
+            overlap_matrix.loc[col1, col2] = overlap_percentage
+            overlap_matrix.loc[col2, col1] = overlap_percentage  # ensure symmetry
+
+    # create a string version of the overlap matrix for annotation with '%' symbols (otherwise gives an error)
+    annot_matrix = overlap_matrix.map(lambda x: f"{x:.2f}%")
+
+    # plot the overlap matrix with heatmap
+    if ax is None:
+        ax = plt.gca()
+    sns.heatmap(overlap_matrix, annot=annot_matrix, fmt="", cmap="YlOrBr", cbar_kws={'label': 'Overlap Percentage (%)'}, ax=ax)
+    ax.set_title("Pairwise Overlap Matrix of Ki, IC50, Kd, EC50")
+
+
+def plot_organism_counts(df):
+    ### let's see how STDs are distributed
+    # Count the number of occurrences for each type of disease
+    organism_counts = df['Target Source Organism According to Curator or DataSource'].value_counts().reset_index()
+    organism_counts.columns = ['Target Source Organism', 'Count']
+
+    plt.figure(figsize=(12, 12))
+
+    # Create the bar plot with the pastel color palette
+    ax = sns.barplot(
+        x='Target Source Organism', 
+        y='Count', 
+        data=organism_counts
+    )
+
+    # Set y-axis to logarithmic scale
+    ax.set_yscale('log')
+
+    plt.xticks(rotation=90, ha='right')
+    plt.xlabel('Target Source Organism According to Curator or DataSource')
+    plt.ylabel('Number of Rows')
+    plt.title('Number of Rows per Target Source Organism')
+    plt.tight_layout()
+    plt.show()
+
+def plot_ic50_boxplots(df, min_rows = 20):
+    # filter to include only diseases with more than 20 rows (better visualisation)
+    organism_counts = df['Target Source Organism According to Curator or DataSource'].value_counts()
+    organisms_to_plot = organism_counts[organism_counts > min_rows].index
+    filtered_df = df[df['Target Source Organism According to Curator or DataSource'].isin(organisms_to_plot)]
+    
+    plt.figure(figsize=(10, 10))
+    
+    ### boxplot of ic50 for every disease
+    sns.boxplot( x='Target Source Organism According to Curator or DataSource', y='IC50 (nM)', data=filtered_df)
+    
+    plt.yscale('log')  # Set y-axis to log scale if the values vary significantly
+    plt.xlabel('Type of STDs')
+    plt.ylabel('IC50 (nM)')
+    plt.xticks(rotation=90)
+    plt.title('IC50 Distribution by disease')
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_publications_per_year(df):
+    # Let's see the number of publications every year
+    plt.figure(figsize=(12, 6))
+
+    # Create a count plot for the publication year
+    sns.countplot(x='year', data=df)
+
+    plt.xticks(rotation=45, ha='right')
+    plt.xlabel('Publication Year')
+    plt.ylabel('Number of Articles Published')
+    plt.title('Number of Articles Published per Year')
+    plt.tight_layout()
+    plt.show()
