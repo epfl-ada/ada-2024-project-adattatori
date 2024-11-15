@@ -26,5 +26,4 @@ def get_dataset():
     path_to_data = os.path.join(root,'data','BindingSTD.zip')
     filename = 'BindingSTD.tsv'
     df = read_tsv_from_zip(path_to_data, filename)
-    print(df.head())
     return df
