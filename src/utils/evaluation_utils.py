@@ -129,3 +129,23 @@ def plot_publications_per_year(df):
     plt.title('Number of Articles Published per Year')
     plt.tight_layout()
     plt.show()
+
+def plot_correlation_matrix(dfa):
+    #setting up the plot
+    f = plt.figure(figsize=(19, 15))
+    
+    # Display the correlation matrix as a heatmap
+    plt.matshow(dfa.corr(), fignum=f.number)
+    #setting the plot (x ticks)
+    plt.xticks(range(dfa.select_dtypes(['number']).shape[1]), dfa.select_dtypes(['number']).columns,fontsize=12, rotation=45)
+    ##setting the plot (y ticks)
+    plt.yticks(range(dfa.select_dtypes(['number']).shape[1]), dfa.select_dtypes(['number']).columns, fontsize=12)
+    
+    # adjust x axis tick parameters to add padding and display labels on the right
+    plt.gca().xaxis.set_tick_params(pad=1, labelright=True)
+    
+    cb = plt.colorbar()
+    cb.ax.tick_params(labelsize=12)
+    
+    plt.title('Correlation Matrix', fontsize=16)
+    plt.show()
