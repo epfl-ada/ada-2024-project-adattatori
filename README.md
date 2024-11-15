@@ -65,13 +65,13 @@ The structure of our repository is the following:
 │
 ├── results.ipynb               <- Notebook showing our results
 │
-├── pip_requirements.txt        <- File for installing python dependencies
+├── environment.yml             <- File for installing python dependencies
 └── README.md
 ```
 In the 'utils' folder there are 3 files: 'data_utils.py' contains the functions that can be applied to the dataset to format it in a usable shape; 'evaluation_utils.py' contains the functions used to plot the results.
 In the 'tests' folder we added all the analysis and explorations that we performed.  
 The 'result.ipynb' main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
-In 'pip_requirements.txt' file there are all the python dependicies needed to run our code. 
+In 'environment.yml' file there are all the python dependicies needed to run our code. 
 
 
 ## Proposed timeline 
