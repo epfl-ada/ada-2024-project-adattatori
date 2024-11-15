@@ -12,55 +12,69 @@ References
 ## Research Questions
 Time independent questions:
 
--What are the main areas in the world in which HIV research is conducted?
+- What are the main areas in the world in which HIV research is conducted?
 
--How many different types of target proteins for HIV are in BindingDB?
+- How many different types of target proteins for HIV are in BindingDB?
 
--What are the drugs that have the highest binding affinity to their targets?
+- What are the drugs that have the highest binding affinity to their targets?
 
--Which structures do these drugs have in common?
+- Which structures do these drugs have in common?
 
 Time dependent questions:
 
--Are medical innovations and scientific advances related to improvement in drug discoveries and affinities throughout the years?
--Given a single target or a single ligand, does the binding affinity change over time? 
+- Are medical innovations and scientific advances related to improvement in drug discoveries and affinities throughout the years?
+- Given a single target or a single ligand, does the binding affinity change over time? 
+
 
 ## Proposed dataset
 
 We will not be using any additional datasets for our analysis. We consider that BindingDB provides us with the necessary information to carry out our project proposal.
 
+
 ## Methods
 
 **Part 1: Preparing and cleaning the dataset** 
 
--Step 1: After inspection of the original BindingDB dataset, we build the master dataset selecting only rows (ligand-target interactions) that are linked to STDs. We manually inspect the target source organisms and selected those related to STDs. 
+- Step 1: After inspection of the original BindingDB dataset, we build the master dataset selecting only rows (ligand-target interactions) that are linked to STDs. We manually inspect the target source organisms and selected those related to STDs. 
 
--Step 2: Cleaning the dataset: This step is crucial for obtaining interpretable results in the next parts. In order to do so, we plotted the availability of binding affinity metrics, and seeing that IC50 was the most abundant one, we selected only rows with IC50 available values. Then we removed rows were NaN values were too abundant.
+- Step 2: Cleaning the dataset: This step is crucial for obtaining interpretable results in the next parts. In order to do so, we plotted the availability of binding affinity metrics, and seeing that IC50 was the most abundant one, we selected only rows with IC50 available values. Then we removed rows were NaN values were too abundant.
 
--Step 3: General exploration of this dataset and selection of HIV, as this immunodeficient disease proved to be the one on which we had the most data available.
+- Step 3: General exploration of this dataset and selection of HIV, as this immunodeficient disease proved to be the one on which we had the most data available.
 
 **Part 2: Focusing on HIV**
 
--Step 1: We extract interesting features for posterior visualization in our project (year of publication of the associated articles).
+- Step 1: We extract interesting features for posterior visualization in our project (year of publication of the associated articles).
 
--Step 2: General analysis of ligand-target couples in our HIV dataset. In order to carry this out, we study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
+- Step 2: General analysis of ligand-target couples in our HIV dataset. In order to carry this out, we study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
 
--Step 3: Literature review and decision to study some of the most common drug classes that are used to treat HIV. We analyzed what proteins were targeted by each drug class. Also, we considered it was a good idea to show the drug class distribution over the years, as well as the IC50 distribution for each drug class in order to get closer to our project goal.
+- Step 3: Literature review and decision to study some of the most common drug classes that are used to treat HIV. We analyzed what proteins were targeted by each drug class. Also, we considered it was a good idea to show the drug class distribution over the years, as well as the IC50 distribution for each drug class in order to get closer to our project goal.
+
 
 ## Organization of the repository
-Our repository will consist of — ipynb files. 
-The — consists of functions that can be applied to all datasets to format them in a usable shape and form. Then, — contains the functions used to plot the results.
-The result main file consists for now of the exploratory data analysis that is performed in the scope of milestone 2.
+The structure of our repository is the following:
+```
+├── data                        <- BindingSTD dataset
+│
+├── src                         <- Source code
+│   ├── data                            <- Data directory 
+│   ├── models                          <- Model directory
+│   ├── utils                           <- Utility directory
+│   ├── scripts                         <- Shell scripts
+│
+├── tests                       <- Complete performed analysis
+│
+├── results.ipynb               <- Notebook showing our results
+│
+├── pip_requirements.txt        <- File for installing python dependencies
+└── README.md
+```
+In the 'utils' folder there are 3 files: 'data_utils.py' contains the functions that can be applied to the dataset to format it in a usable shape; 'evaluation_utils.py' contains the functions used to plot the results.
+In the 'tests' folder we added all the analysis and explorations that we performed.  
+The 'result.ipynb' main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
+In 'pip_requirements.txt' file there are all the python dependicies needed to run our code. 
 
 
 ## Proposed timeline 
- 
-**Week 12:** Reviewing our time-wise exploration to create a timeline of the evolution of drug discovery on sexually transmitted diseases. Analysis of the past evolution of drug discovery and comparison with the present state-of-art to find statistically relevant information.
-Our objective will be to try and explore aminoacid sequences of target proteins to find relevant structures that combined with specific ligand features are capable of predicting higher binding affinities. If possible, trying to train a supervised learning model that will predict good or bad affinity according to protein and ligand relevant characteristics.
-
-**Week 13:** Devising the data story from the analyses so that it is aligned with our research question and beggining the webpage.
-
-**Week 14:** Wrapping up the data story webpage, hosting cohesive and interactive visualizations to display our outcome in an interesting and engaging fashion.  
 
 | Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
 |-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
@@ -72,9 +86,6 @@ Our objective will be to try and explore aminoacid sequences of target proteins 
 | Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
 |       | **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
 |       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
-
-
-
 
 
 ## Organization within the team
