@@ -3,6 +3,7 @@ from rdkit.Chem import Descriptors, AllChem
 from rdkit.Chem import rdMolDescriptors
 import numpy as np
 from rdkit import DataStructs
+import pandas as pd
 
 def smiles_to_mol(smiles):
     """Convert SMILES string to RDKit Mol object."""

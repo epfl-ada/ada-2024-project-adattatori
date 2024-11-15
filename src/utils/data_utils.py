@@ -21,6 +21,7 @@ def clean_na_columns(df, threshold = 0.5):
 
 
 def nan_to_numeric(df):
+    df = df.reset_index()
     # Select columns that contain NaNs
     columns_with_nans_nn = df.columns[df.isna().any()]
 
@@ -29,6 +30,21 @@ def nan_to_numeric(df):
         if df[col].apply(lambda x: isinstance(x, (int, float)) or pd.isna(x)).all():
             # Convert column to np.float64
             df[col] = df[col].astype(np.float64)
+    columns = ['UniProt (TrEMBL) Submitted Name of Target Chain',
+            'UniProt (TrEMBL) Entry Name of Target Chain',
+            'UniProt (TrEMBL) Primary ID of Target Chain',
+            'ZINC ID of Ligand',
+            'PDB ID(s) of Target Chain',
+            'PMID',
+            'Article DOI',
+            'Institution',
+            'Authors',
+            'Ligand InChI Key',
+            'Ligand InChI',
+            'PubChem CID',
+            'PubChem SID']
+    df = df.drop(columns=columns)
+    df = df.dropna()
     return df
 
 # function to do an http request to get the publication year using CrossRef
