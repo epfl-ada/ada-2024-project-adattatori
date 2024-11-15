@@ -82,7 +82,6 @@ def plot_organism_counts(df):
 
     plt.figure(figsize=(12, 12))
 
-    # Create the bar plot with the pastel color palette
     ax = sns.barplot(
         x='Target Source Organism', 
         y='Count', 
@@ -118,6 +117,19 @@ def plot_ic50_boxplots(df, min_rows = 20):
     plt.tight_layout()
     plt.show()
 
+def plot_most_targeted_proteins(df, organism = 'Human immunodeficiency virus 1', n = 20):
+    df = df[df['Target Source Organism According to Curator or DataSource'] == organism]
+    if organism == 'Human immunodeficiency virus 1':
+        df['Target Name'] = df['Target Name'].str.replace("Dimer of ", "", regex=False)
+        df['Target Name'] = df['Target Name'].str.replace("Reverse transcriptase protein", "Reverse transcriptase", regex=False)
+    targeted = df['Target Name'].value_counts().head(n)
+    plt.figure(figsize=(12, 8))
+    sns.barplot( x=targeted.index, y=targeted.values, hue=targeted.index, palette='colorblind', dodge=False, legend=False)
+    plt.xticks(rotation=90)
+    plt.title(f'Most Targeted {organism} Proteins')
+    plt.xlabel("Target Name")
+    plt.ylabel("Count")
+    plt.show()
 
 def plot_publications_per_year(df):
     # Let's see the number of publications every year
@@ -239,3 +251,87 @@ def plot_pca_3d(df, clusters, kmc):
     # show plot
     plt.show()
 
+def plot_protein_target_heatmap(data, drug_class_col='Drug_Class', target_name_col='Target Name', title="Targeted HIV Proteins by Drug Class"):
+    """
+    Plots a heatmap showing the count of protein targets by drug class.
+
+    Parameters:
+    - data (DataFrame): The DataFrame containing drug class and target name information.
+    - drug_class_col (str): The column name for drug classes in the DataFrame.
+    - target_name_col (str): The column name for protein target names in the DataFrame.
+    - title (str): Title of the heatmap plot.
+    
+    Returns:
+    - None: Displays the heatmap.
+    """
+    # Group the data by drug class and target name and count occurrences
+    protein_target_counts = data.groupby([drug_class_col, target_name_col]).size().reset_index(name='Count')
+    
+    # Pivot the table for a better visualization
+    table = protein_target_counts.pivot(index=drug_class_col, columns=target_name_col, values='Count').fillna(0)
+    
+    # Plot the heatmap
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(table, annot=False, cmap="YlGnBu", cbar_kws={'label': 'Count'})
+    plt.title(title)
+    plt.ylabel(drug_class_col)
+    plt.xlabel(target_name_col)
+    plt.tight_layout()
+    plt.show()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def plot_drug_distribution_by_year(data, year_col='year_y', drug_class_col='Drug_Class', title="Distribution of Drugs by Year (Side-by-Side by Drug Class)"):
+    """
+    Plots the distribution of drug classes by year using a side-by-side histogram.
+
+    Parameters:
+    - data (DataFrame): The DataFrame containing drug distribution data.
+    - year_col (str): The column name for years in the DataFrame.
+    - drug_class_col (str): The column name for drug classes in the DataFrame.
+    - title (str): Title of the histogram plot.
+    
+    Returns:
+    - None: Displays the histogram.
+    """
+    plt.figure(figsize=(12, 6))
+    sns.histplot(data=data, x=year_col, hue=drug_class_col, multiple='dodge', kde=False)
+    plt.title(title)
+    plt.xlabel("Year")
+    plt.ylabel("Count of Drugs")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+def plot_ic50_by_drug_class(data, drug_class_col='Drug_Class', ic50_col='IC50 (nM)', 
+                            drug_class_order=None, title="Distribution of IC50 (nM) by Drug Class"):
+    """
+    Plots the distribution of IC50 values by drug class using a boxplot with a log-scaled and inverted y-axis.
+
+    Parameters:
+    - data (DataFrame): The DataFrame containing IC50 and drug class information.
+    - drug_class_col (str): The column name for drug classes in the DataFrame.
+    - ic50_col (str): The column name for IC50 values in the DataFrame.
+    - drug_class_order (list): The specific order for drug classes in the plot.
+    - title (str): Title of the boxplot.
+    
+    Returns:
+    - None: Displays the boxplot.
+    """
+    # Set up the plotting style
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(12, 8))
+    
+    # Plot IC50 distribution by drug class using a boxplot
+    sns.boxplot(data=data, x=drug_class_col, y=ic50_col, order=drug_class_order)
+    
+    # Apply a log scale to the y-axis for better visualization
+    plt.yscale('log')
+    
+    # Labels and title
+    plt.title(title)
+    plt.xlabel("Drug Class")
+    plt.ylabel("IC50 (nM)")
+    plt.tight_layout()
+    plt.show()
