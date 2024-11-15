@@ -1,6 +1,6 @@
-### All you need is love… and a good chemical affinity
+## All you need is love **🫂… and a good chemical affinity **🧪
 
-## Abstract
+### Abstract
 As social beings, we humans tend to create meaningful romantic relationships. Nevertheless, jumping into this boat implies assuming the many risks that come along with the decision of being part of a couple. Amongst these numerous risks, a generalized one is related to infections and viral transmissions between the individuals concerned. Emblematically, sexually transmitted infections and subsequent diseases (STDs) are a representative example of this, to the extent that the World Health Organisation still recognises them as a prominent problem, integrating their potential eradication in its 2030 agenda purposes [1]. 
 However, not only humans live their life in couples but so do chemical compounds, which are created with the only purpose and sole aim of belonging to their future partner: “their target protein”. With this project we are keen to see how “couples” in the chemical domain strive to combat this aforementioned human problem, contributing to the health of human relationships. Thus, we would like to trace development of the drugs against STDs, with a particular focus on HIV, and try to depict the main changes in drug affinity for their targets over time. We will embark on a quest to seek similarities in the ligands that can better predict affinity and therefore show the tip of the iceberg of the enormous potential that chemical binding has to pursue this aim.  
 
@@ -8,7 +8,7 @@ References
 [1] https://www.who.int/publications/i/item/9789240053779
 
 
-## Research Questions
+### Research Questions
 Time independent questions:
 
 -What are the main areas in the world in which HIV research is conducted?
@@ -21,11 +21,11 @@ Time dependent questions:
 -Are medical innovations and scientific advances related to improvement in drug discoveries and affinities throughout the years?
 -Given a single target or a single ligand, does the binding affinity change over time? 
 
-## Proposed dataset
+### Proposed dataset
 
 We will not be using any additional datasets for our analysis. We consider that BindingDB provides us with the necessary information to carry out our project proposal.
 
-## Methods
+### Methods
 
 **Part 1: Preparing and cleaning the dataset** 
 -Step 1: After inspection of the original BindingDB dataset, we build the master dataset selecting only rows (ligand-target interactions) that are linked to STDs. We manually inspect the target source organisms and selected those related to STDs. 
@@ -37,13 +37,13 @@ We will not be using any additional datasets for our analysis. We consider that 
 -Step 2: General analysis of ligand-target couples in our HIV dataset. In order to carry this out, we study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
 -Step 3: Literature review and decision to study some of the most common drug classes that are used to treat HIV. We analyzed what proteins were targeted by each drug class. Also, we considered it was a good idea to show the drug class distribution over the years, as well as the IC50 distribution for each drug class in order to get closer to our project goal.
 
-## Organization of the repository
+### Organization of the repository
 Our repository will consist of — ipynb files. 
 The — consists of functions that can be applied to all datasets to format them in a usable shape and form. Then, — contains the functions used to plot the results.
 The result main file consists for now of the exploratory data analysis that is performed in the scope of milestone 2.
 
 
-## Proposed timeline 
+### Proposed timeline 
  
 **Week 12:** Reviewing our time-wise exploration to create a timeline of the evolution of drug discovery on sexually transmitted diseases. Analysis of the past evolution of drug discovery and comparison with the present state-of-art to find statistically relevant information.
 Our objective will be to try and explore aminoacid sequences of target proteins to find relevant structures that combined with specific ligand features are capable of predicting higher binding affinities. If possible, trying to train a supervised learning model that will predict good or bad affinity according to protein and ligand relevant characteristics.
@@ -64,7 +64,19 @@ Our objective will be to try and explore aminoacid sequences of target proteins 
 |       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
 
 
-## Organization within the team
+| Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
+|-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| Week 12 | **Analysis of Drug Discovery Timeline**                                                                  | Review the historical evolution of drug discovery for STDs. Analyze and compare past methods with current state-of-the-art techniques. |
+|        **Exploration of Protein-Ligand Binding**                                                                  | Explore amino acid sequences of target proteins and identify relevant structures for predicting binding affinities. |
+|        **Supervised Learning Model**                                                                             | Investigate the possibility of training a supervised learning model to predict binding affinity based on protein-ligand characteristics. |
+| Week 13 | **Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
+|        **Website Development**                                                                                  | Start working on the webpage layout and design for presenting the findings in an engaging way. |
+| Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
+|        **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
+|        **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
+
+
+### Organization within the team
 
 **Mattia**: Further exploration to uncover correlations between features and affinity.  
 
