@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+
 
 def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"], ax=None):
     """
@@ -149,3 +152,90 @@ def plot_correlation_matrix(dfa):
     
     plt.title('Correlation Matrix', fontsize=16)
     plt.show()
+
+
+def plot_correlation_matrix2(dfa):
+    # Compute the correlation matrix
+    corr_matrix = dfa.corr()
+
+    # Set up the plot
+    f = plt.figure(figsize=(19, 15))
+
+    # Display the correlation matrix as a heatmap
+    plt.matshow(corr_matrix, fignum=f.number, cmap='coolwarm')
+    
+    # Setting the plot (x ticks)
+    plt.xticks(
+        range(corr_matrix.shape[1]), 
+        corr_matrix.columns, 
+        fontsize=12, 
+        rotation=45,
+        ha='left'  # Aligns the labels to the left
+    )
+    
+    # Setting the plot (y ticks)
+    plt.yticks(
+        range(corr_matrix.shape[0]), 
+        corr_matrix.columns, 
+        fontsize=12
+    )
+    
+    # Adjusting x-axis tick parameters
+    plt.gca().xaxis.set_tick_params(pad=5, labelright=True)
+    
+    # Add color bar
+    cb = plt.colorbar()
+    cb.ax.tick_params(labelsize=12)
+    
+    # Set the title
+    plt.title('Correlation Matrix', fontsize=16)
+    
+    # Show the plot
+    plt.show()
+
+
+def plot_sse(features_X, start=2, end=11):
+    sse = []
+    for k in range(start, end):
+        # Assign the labels to the clusters
+        kmeans = KMeans(n_clusters=k, random_state=10).fit(features_X)
+        sse.append({"k": k, "sse": kmeans.inertia_})
+
+    sse = pd.DataFrame(sse)
+    # Plot the data
+    plt.plot(sse.k, sse.sse)
+    plt.xlabel("K")
+    plt.ylabel("Sum of Squared Errors")
+
+
+def plot_pca_2d(df, clusters, kmc):
+    pca = PCA(n_components=2)
+    reduced_data = pca.fit_transform(df)
+
+    plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=clusters)
+    if kmc == True:
+        plt.title("K-means Clustering Results")
+    else:
+        plt.title('Spectral Clustering results')
+    plt.xlabel("PCA Component 1")
+    plt.ylabel("PCA Component 2")
+    plt.show()
+
+
+def plot_pca_3d(df, clusters, kmc):
+    pca3 = PCA(n_components=3)
+    reduced_data = pca3.fit_transform(df)
+
+    # Creating figure
+    fig = plt.figure(figsize = (10, 7))
+    ax = plt.axes(projection ="3d")
+    
+    # Creating plot
+    ax.scatter3D(reduced_data[:,0], reduced_data[:,1], reduced_data[:,2], c=clusters)
+    if kmc==True:
+        plt.title("3D PCA for K-means")
+    else:
+        plt.title("3D PCA for Spectral CLustering")    
+    # show plot
+    plt.show()
+

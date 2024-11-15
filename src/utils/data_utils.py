@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import requests
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 def select_metric(df, metric = 'IC50 (nM)'):
     df[metric] = pd.to_numeric(df[metric], errors = 'coerce')
@@ -66,3 +68,30 @@ def get_publication_year(doi):
         ## print an error message if something goes wrong
         print(f"Could not retrieve year for DOI {doi}: {e}")
         return None
+
+
+def separe_num_df(df):
+    # Separate numerical and non-numerical columns
+    numerical_cols = df.select_dtypes(include=['number']).columns
+    non_numerical_cols = df.select_dtypes(exclude=['number']).columns
+
+    # Create DataFrames for numerical and non-numerical data
+    numerical_df = df[numerical_cols]
+    non_numerical_df = df[non_numerical_cols]
+    return numerical_df, non_numerical_df
+
+def create_df_mf(df, df_low):
+    np.random.seed(469875)
+    mask = np.random.choice(a = len(df_low), size=(5000,), replace=False)
+    cols = ['Ligand SMILES', 'BindingDB Ligand Name', 'Target Name',
+       'Target Source Organism According to Curator or DataSource',
+       'Curation/DataSource', 'BindingDB Entry DOI',
+       'Link to Ligand in BindingDB', 'Link to Target in BindingDB',
+       'Link to Ligand-Target Pair in BindingDB',
+       'BindingDB Target Chain Sequence', 'Mol', 'Morgan_f', 'Mol',
+       'Morgan_f']
+    df.columns = cols
+    df = df.loc[:, ~df.columns.duplicated()]
+    non_numerical_df_lowIC50 = df.loc[df_low.index]
+    df_sample = non_numerical_df_lowIC50.iloc[mask]
+    return df_sample
