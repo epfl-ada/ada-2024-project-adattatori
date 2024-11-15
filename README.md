@@ -32,6 +32,7 @@ We will not be using any additional datasets for our analysis. We consider that 
 ## Methods
 
 **Part 1: Preparing and cleaning the dataset** 
+
 -Step 1: After inspection of the original BindingDB dataset, we build the master dataset selecting only rows (ligand-target interactions) that are linked to STDs. We manually inspect the target source organisms and selected those related to STDs. 
 
 -Step 2: Cleaning the dataset: This step is crucial for obtaining interpretable results in the next parts. In order to do so, we plotted the availability of binding affinity metrics, and seeing that IC50 was the most abundant one, we selected only rows with IC50 available values. Then we removed rows were NaN values were too abundant.
@@ -39,6 +40,7 @@ We will not be using any additional datasets for our analysis. We consider that 
 -Step 3: General exploration of this dataset and selection of HIV, as this immunodeficient disease proved to be the one on which we had the most data available.
 
 **Part 2: Focusing on HIV**
+
 -Step 1: We extract interesting features for posterior visualization in our project (year of publication of the associated articles).
 
 -Step 2: General analysis of ligand-target couples in our HIV dataset. In order to carry this out, we study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
