@@ -251,7 +251,7 @@ def plot_pca_3d(df, clusters, kmc):
     # show plot
     plt.show()
 
-def plot_protein_target_heatmap(data, drug_class_col='Drug_Class', target_name_col='Target Name', title="Targeted HIV Proteins by Drug Class"):
+def plot_protein_target_heatmap(data, drug_class_col='Drug_Class', target_name_col='Target Name', title="Targeted HIV Proteins by Drug Class", figsize = (12,20)):
     """
     Plots a heatmap showing the count of protein targets by drug class.
 
@@ -271,7 +271,7 @@ def plot_protein_target_heatmap(data, drug_class_col='Drug_Class', target_name_c
     table = protein_target_counts.pivot(index=drug_class_col, columns=target_name_col, values='Count').fillna(0)
     
     # Plot the heatmap
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=figsize)
     sns.heatmap(table, annot=False, cmap="YlGnBu", cbar_kws={'label': 'Count'})
     plt.title(title)
     plt.ylabel(drug_class_col)
@@ -320,7 +320,6 @@ def plot_ic50_by_drug_class(data, drug_class_col='Drug_Class', ic50_col='IC50 (n
     - None: Displays the boxplot.
     """
     # Set up the plotting style
-    sns.set(style="whitegrid")
     plt.figure(figsize=(12, 8))
     
     # Plot IC50 distribution by drug class using a boxplot
