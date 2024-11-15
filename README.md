@@ -1,4 +1,4 @@
-## All you need is love **🫂… and a good chemical affinity **🧪
+# All you need is love 🫂… and a good chemical affinity 🧪
 
 ### Abstract
 As social beings, we humans tend to create meaningful romantic relationships. Nevertheless, jumping into this boat implies assuming the many risks that come along with the decision of being part of a couple. Amongst these numerous risks, a generalized one is related to infections and viral transmissions between the individuals concerned. Emblematically, sexually transmitted infections and subsequent diseases (STDs) are a representative example of this, to the extent that the World Health Organisation still recognises them as a prominent problem, integrating their potential eradication in its 2030 agenda purposes [1]. 
@@ -64,16 +64,7 @@ Our objective will be to try and explore aminoacid sequences of target proteins 
 |       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
 
 
-| Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
-|-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| Week 12 | **Analysis of Drug Discovery Timeline**                                                                  | Review the historical evolution of drug discovery for STDs. Analyze and compare past methods with current state-of-the-art techniques. |
-|        **Exploration of Protein-Ligand Binding**                                                                  | Explore amino acid sequences of target proteins and identify relevant structures for predicting binding affinities. |
-|        **Supervised Learning Model**                                                                             | Investigate the possibility of training a supervised learning model to predict binding affinity based on protein-ligand characteristics. |
-| Week 13 | **Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
-|        **Website Development**                                                                                  | Start working on the webpage layout and design for presenting the findings in an engaging way. |
-| Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
-|        **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
-|        **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
+
 
 
 ### Organization within the team
