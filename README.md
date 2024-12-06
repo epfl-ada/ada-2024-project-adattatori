@@ -10,21 +10,8 @@ References
 
 
 ## Research Questions
-Time independent questions:
-
-- What are the main areas in the world in which HIV research is conducted?
-
 - How many different types of target proteins for HIV are in BindingDB?
-
-- What are the drugs that have the highest binding affinity to their targets?
-
-- Which structures do these drugs have in common?
-
-Time dependent questions:
-
-- Are medical innovations and scientific advances related to improvement in drug discoveries and affinities throughout the years?
-- Given a single target or a single ligand, does the binding affinity change over time? 
-
+- Which structures do the ligands with high affinty have in common?
 
 ## Proposed dataset
 
@@ -41,13 +28,13 @@ We will not be using any additional datasets for our analysis. We consider that 
 
 - Step 3: General exploration of this dataset and selection of HIV, as this immunodeficient disease proved to be the one on which we had the most data available.
 
-**Part 2: Focusing on HIV**
+**Part 2: Focusing on HIV: ligand-target couples**
 
-- Step 1: We extract interesting features for posterior visualization in our project (year of publication of the associated articles).
+- Step 1: Analysis of target proteins in HIV: these are the elements that we use to attack this virus. Plot of the different types we found and their frequencies
 
-- Step 2: Literature review and decision to study some of the most common drug classes that are used to treat HIV. We considered an interesting idea to show the drug class distribution over the years, as well as the IC50 distribution for each drug class in order to get closer to our project goal. Also, we analyzed what proteins were targeted by each drug class.
+- Step 2:
 
-- Step 3: General analysis of ligand-target couples in our HIV dataset. In order to carry this out, we study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
+- Step 3: Study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
 
 
 ## Organization of the repository
@@ -78,10 +65,9 @@ In 'environment.yml' file there are all the python dependicies needed to run our
 
 | Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
 |-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| Week 12 | **Analysis of Drug Discovery Timeline**                                                                  | Review the historical evolution of drug discovery for STDs. Analyze and compare past methods with current state-of-the-art techniques. |
+| Week 12 |**Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
 |       | **Exploration of Protein-Ligand Binding**                                                                  | Explore amino acid sequences of target proteins and identify relevant structures for predicting binding affinities. |
-|       | **Supervised Learning Model**                                                                             | Investigate the possibility of training a supervised learning model to predict binding affinity based on protein-ligand characteristics. |
-| Week 13 | **Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
+| Week 13 | 
 |       | **Website Development**                                                                                  | Start working on the webpage layout and design for presenting the findings in an engaging way. |
 | Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
 |       | **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
@@ -92,11 +78,11 @@ In 'environment.yml' file there are all the python dependicies needed to run our
 
 **Mattia**: Further exploration to uncover correlations between features and affinity.  
 
-**Federico**: Analysis of the actual drug discovery and comparison with the past one.
+**Federico**: Creativity ideation of the webpage format. 
 
-**Simone**: Analysis of the drug discovery in the past, retrieving interesting features to make comparisons.
+**Simone**: Analysis of the drug discovery retrieving interesting features to make comparisons.
 
 **Leonor**: Creativity ideation of the webpage and formatting of the repository for its creation.
 
-**Elisa**: Creativity ideation of the webpage format and recovery of protein sequences and features from UniProt or PDB.  
+**Elisa**: Recovery of protein sequences and features from UniProt or PDB, description of the datastory.  
 
