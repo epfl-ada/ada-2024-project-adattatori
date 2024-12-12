@@ -4,6 +4,7 @@ from rdkit.Chem import rdMolDescriptors
 import numpy as np
 from rdkit import DataStructs
 import pandas as pd
+from scipy.spatial.distance import dice
 
 def smiles_to_mol(smiles):
     """Convert SMILES string to RDKit Mol object."""
@@ -72,6 +73,29 @@ def compute_tanimoto_similarities(df_sample):
     for i in range(n):
         for j in range(i, n):  # Only comput for j > i to avoid repetiton
             similarity = DataStructs.TanimotoSimilarity(fingerprints[i], fingerprints[j])
+            similarity_matrix[i, j] = similarity
+            similarity_matrix[j, i] = similarity  # Symmetric matrx
+
+    # Now similarity_matrix contins all pairwise Tanimoto similarities
+    # If you need them in a flattened aray (e.g., for furter analysis or plotting)
+    similarities = similarity_matrix[np.triu_indices(n, 1)]  # Flatten upper triangle of the matrix
+
+    # Return both the similarities (flattened) and similarity matrix
+    return similarities, similarity_matrix
+
+
+    # Compute fingerprints list converting each value to a bit vecter
+def compute_dice_similarities(df_sample):
+    fingerprints = df_sample['Morgan_f'].values
+
+    # Initialize a 2D aray to store the Tanimoto similarity values
+    n = len(fingerprints)
+    similarity_matrix = np.zeros((n, n))
+
+    # Comput the Tanimoto similarity betwen each pair of fingerprints
+    for i in range(n):
+        for j in range(i, n):  # Only comput for j > i to avoid repetiton
+            similarity = dice(fingerprints[i], fingerprints[j])
             similarity_matrix[i, j] = similarity
             similarity_matrix[j, i] = similarity  # Symmetric matrx
 

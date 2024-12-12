@@ -6,6 +6,20 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 
 
+def plot_target_organism_distribution(df):
+    df = df[df['Target Source Organism According to Curator or DataSource'].notna()]
+    # Count occurrences of each organism
+    category_counts = df['Target Source Organism According to Curator or DataSource'].value_counts()
+    category_counts = category_counts[category_counts.index != 'nan']
+    category_counts = category_counts[:15]
+    # Plot the pie chart
+    plot = category_counts.plot.pie(figsize=(15, 15), autopct='%1.1f%%')
+    
+    # Display the plot
+    import matplotlib.pyplot as plt
+    plt.ylabel('')  # Optional: Remove y-axis label for better visualization
+    plt.show()
+
 def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"], ax=None):
     """
     Cleans the data by converting threshold values (e.g., '>50000', '<1') to NaN, calculates, 

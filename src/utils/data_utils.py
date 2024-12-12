@@ -95,3 +95,31 @@ def create_df_mf(df, df_low):
     non_numerical_df_lowIC50 = df.loc[df_low.index]
     df_sample = non_numerical_df_lowIC50.iloc[mask]
     return df_sample
+
+
+def nan_to_numeric(df):
+    df = df.reset_index()
+    # Select columns that contain NaNs
+    columns_with_nans_nn = df.columns[df.isna().any()]
+
+    # Convert columns with NaNs to np.float64 if they contain only numeric values or NaNs
+    for col in columns_with_nans_nn:
+        if df[col].apply(lambda x: isinstance(x, (int, float)) or pd.isna(x)).all():
+            # Convert column to np.float64
+            df[col] = df[col].astype(np.float64)
+    columns = ['UniProt (TrEMBL) Submitted Name of Target Chain',
+            'UniProt (TrEMBL) Entry Name of Target Chain',
+            'UniProt (TrEMBL) Primary ID of Target Chain',
+            'ZINC ID of Ligand',
+            'PDB ID(s) of Target Chain',
+            'PMID',
+            'Article DOI',
+            'Institution',
+            'Authors',
+            'Ligand InChI Key',
+            'Ligand InChI',
+            'PubChem CID',
+            'PubChem SID']
+    df = df.drop(columns=columns)
+    df = df.dropna()
+    return df
