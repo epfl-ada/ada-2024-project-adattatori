@@ -84,5 +84,5 @@ In 'environment.yml' file there are all the python dependicies needed to run our
 
 **Leonor**: Creativity ideation of the webpage and formatting of the repository for its creation.
 
-**Elisa**: Recovery of protein sequences and features from UniProt or PDB, description of the datastory.  
+**Elisa**: Description of the datastory, enlargement of the analysis about proteins.  
 
