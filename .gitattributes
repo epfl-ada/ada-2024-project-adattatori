@@ -1,0 +1,1 @@
+data/BindingDB_All.zip filter=lfs diff=lfs merge=lfs -text
