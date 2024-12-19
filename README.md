@@ -2,7 +2,7 @@
 
 ## URL to the data story
 
-https://federicorossi498.github.io/adattatori-web/
+Here is the URL to our data story: https://federicorossi498.github.io/adattatori-web/
 
 ## Abstract
 Humans, as social beings, often form meaningful romantic relationships. However, such bonds come with risks, including the transmission of infections. Sexually transmitted diseases (STDs) remain a significant global health issue, with the World Health Organization recognizing their eradication as a key objective in its 2030 agenda. Among these diseases, HIV stands out due to its enduring impact.
@@ -50,8 +50,7 @@ The structure of our repository is the following:
 ├── data                        <- BindingSTD dataset
 │
 ├── src                         <- Source code
-│   ├── data                            <- Data directory 
-│   ├── models                          <- Model directory
+│   ├── data                            <- Data directory
 │   ├── utils                           <- Utility directory
 │   ├── scripts                         <- Shell scripts
 │
@@ -62,10 +61,10 @@ The structure of our repository is the following:
 ├── environment.yml             <- File for installing python dependencies
 └── README.md
 ```
-In the 'utils' folder there are 3 files: 'data_utils.py' contains the functions that can be applied to the dataset to format it in a usable shape; 'evaluation_utils.py' contains the functions used to plot the results.
+In the 'utils' folder there are 2 files: 'data_utils.py' contains the functions that can be applied to the dataset to format it in a usable shape; 'evaluation_utils.py' contains the functions used to plot the results and to perform statistical tests.
 In the 'tests' folder we added all the analysis and explorations that we performed.  
 The 'result.ipynb' main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
-In 'environment.yml' file there are all the python dependicies needed to run our code. 
+In 'environment.yml' file there are all the python dependicies needed to run our code. In the `data` folder there are two files: `dataloader.py` contains the data loading functions; `std_extraction.ipynb` contains the workflow to obtain the STDs dataset that we use also in the principal notebook. The `scripts` folder contains the `rdkit_extraction.py` file, that contains some useful methods to leverage the RDKit library for our analyses
 
 
 ## Proposed timeline 
@@ -81,15 +80,15 @@ In 'environment.yml' file there are all the python dependicies needed to run our
 |       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
 
 
-## Organization within the team
+## Contributions of all group members
 
-**Mattia**: Further exploration to uncover correlations between features and affinity.  
+**Mattia**: Ligands' features analysis, explorations with RDKit, final notebook writing.
 
-**Federico**: Creativity ideation of the webpage format. 
+**Federico**: Website development, final notebook writing, code quality control.
 
-**Simone**: Analysis of the drug discovery retrieving interesting features to make comparisons.
+**Simone**: Whole dataset explorations, protein targets analysis, final notebook writing.
 
-**Leonor**: Creativity ideation of the webpage and formatting of the repository for its creation.
+**Leonor**: Graphs plotting, website development and data story writing.
 
-**Elisa**: Description of the datastory, enlargement of the analysis about proteins.  
+**Elisa**: Website development, data story and README writing.
 
