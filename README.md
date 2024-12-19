@@ -10,6 +10,7 @@ References
 
 ## Research Questions
 - Which are the main different types of target proteins in the fight against HIV?
+- Is there any target with significant better affinity score?
 - Which features do the ligands with high affinty have in common?
 - 
 
