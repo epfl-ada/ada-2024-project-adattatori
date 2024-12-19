@@ -30,9 +30,12 @@ We will not be using any additional datasets for our analysis. We consider that 
 
 **Part 2: Focusing on HIV: ligand-target couples**
 
-- Step 1: Analysis of target proteins in HIV: these are the elements that we use to attack this virus. Plot of the different types we found and their frequencies
+- Step 1: Analysis of target proteins in HIV: these are the elements that we use to attack this virus. Plot of the different types we found and their frequencies. Three are the most present: Reverse Transcriptase, Gag-Pol polyprotein, and Integrase.
+    - Step 1.1: Analysis of IC50 to see the relationship between this value and the different targets.
+    - Step 1.2: Statitical test to study the distribution of the data for subsequent analysis: Kolmogorov-Smirnov test
+    - Step 1.3: Two different statistical test to prove how the median varies among the targets: Kruskal-Wallis test and post-hoc Dunn’s test. The latter shows that at the standard significance threshold of 0.05, the Gag-Pol polyprotein emerges as a standout.
 
-- Step 2:
+- Step 2: Focus on ligands: 
 
 - Step 3: Study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
 
