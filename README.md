@@ -1,17 +1,17 @@
 # All you need is love🫂 … and a good chemical affinity🧪
 
 ## Abstract
-As social beings, we humans tend to create meaningful romantic relationships. Nevertheless, jumping into this boat implies assuming the many risks that come along with the decision of being part of a couple. Amongst these numerous risks, a generalized one is related to infections and viral transmissions between the individuals concerned. Emblematically, sexually transmitted infections and subsequent diseases (STDs) are a representative example of this, to the extent that the World Health Organisation still recognises them as a prominent problem, integrating their potential eradication in its 2030 agenda purposes [1]. 
-However, not only humans live their life in couples but so do chemical compounds, which are created with the only purpose and sole aim of belonging to their future partner: “their target protein”. 
-With this project we are keen to see how “couples” in the chemical domain strive to combat this aforementioned human problem, contributing to the health of human relationships. Thus, we would like to trace development of the drugs against STDs, with a particular focus on HIV, and try to depict the main changes in drug affinity for their targets over time. We will embark on a quest to seek similarities in the ligands that can better predict affinity and therefore show the tip of the iceberg of the enormous potential that chemical binding has to pursue this aim.  
+Humans, as social beings, often form meaningful romantic relationships. However, such bonds come with risks, including the transmission of infections. Sexually transmitted diseases (STDs) remain a significant global health issue, with the World Health Organization recognizing their eradication as a key objective in its 2030 agenda. Among these diseases, HIV stands out due to its enduring impact.
+Interestingly, the concept of relationships extends beyond humans to the chemical realm, where compounds are designed to bond with their “target proteins”. This project aims to explore how these chemical “couples” have contributed to combating STDs, particularly HIV. By tracing affinity levels, we aim to analyze changes in drug affinity for their targets due to different features. Additionally, our analysis will expand to ligands to better understand how drug development has progressed, focusing on ligands with varying properties. 
 
 References
 [1] https://www.who.int/publications/i/item/9789240053779
 
 
 ## Research Questions
-- How many different types of target proteins for HIV are in BindingDB?
-- Which structures do the ligands with high affinty have in common?
+- Which are the main different types of target proteins in the fight against HIV?
+- Which features do the ligands with high affinty have in common?
+- 
 
 ## Proposed dataset
 
