@@ -21,14 +21,25 @@ def plot_target_organism_distribution(df):
     plt.ylabel('')  # Optional: Remove y-axis label for better visualization
     plt.show()
 
-def plot_target_organism_distribution_plotly(df):
+def plot_target_organism_distribution_plotly(df, top_n=10):
+    """
+    Creates an interactive pie chart showing the distribution of target organisms,
+    with a larger chart and fewer labels for clarity.
+
+    Args:
+        df (DataFrame): The DataFrame containing 'Target Source Organism According to Curator or DataSource'.
+        top_n (int): Number of top organisms to display in the chart.
+
+    Returns:
+        None: Displays the interactive pie chart.
+    """
     # Filter out rows with missing values in the specified column
     df = df[df['Target Source Organism According to Curator or DataSource'].notna()]
     
     # Count occurrences of each organism
     category_counts = df['Target Source Organism According to Curator or DataSource'].value_counts()
     category_counts = category_counts[category_counts.index != 'nan']
-    category_counts = category_counts[:15]  # Select the top 15 categories
+    category_counts = category_counts[:top_n]  # Limit to the top N categories
 
     # Convert the data to a DataFrame for Plotly
     category_data = category_counts.reset_index()
@@ -38,10 +49,23 @@ def plot_target_organism_distribution_plotly(df):
     fig = px.pie(category_data, 
                  values='Count', 
                  names='Organism', 
-                 title='Top 15 Target Source Organisms',
-                 hole=0.4)  # Optional: Add a donut hole for style
+                 title='Target Source Organisms Distribution',
+                 hole=0.4)  # Add a donut hole for style
 
-    # Show the interactive plot
+    # Update layout for a larger plot and clearer labels
+    fig.update_layout(
+        title="Target Source Organisms Distribution",
+        legend=dict(
+            orientation="v",  # Vertical legend
+            y=0.5,  # Center vertically
+            x=1.2,  # Position on the right
+            font=dict(size=12)  # Adjust font size
+        ),
+        width=1200,  # Increase width
+        height=1200,  # Increase height
+    )
+
+    # Show the plot
     fig.show()
 
 def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"], ax=None):
