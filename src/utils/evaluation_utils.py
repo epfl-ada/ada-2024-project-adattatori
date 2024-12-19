@@ -5,6 +5,99 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 import plotly.express as px
+from scipy.stats import kstest
+from scipy.stats import kruskal
+from scikit_posthocs import posthoc_dunn
+
+def perform_ks_test(dataframe, group_col, value_col):
+    """
+    Perform Kolmogorov-Smirnov (KS) test for normality on each unique group in a DataFrame
+    and print the results for each group.
+
+    Parameters:
+    - dataframe (pd.DataFrame): Input DataFrame containing the data.
+    - group_col (str): Column name representing the group/category.
+    - value_col (str): Column name representing the values to test for normality.
+    """
+    for group in dataframe[group_col].unique():
+        group_data = dataframe[dataframe[group_col] == group][value_col]
+        ks_stat, ks_p = kstest(group_data, 'norm', args=(group_data.mean(), group_data.std()))
+        print(f"{group}: KS-Test Statistic = {ks_stat}, p-value = {ks_p}")
+
+def perform_kruskal_wallis_test(dataframe, group_col, value_col):
+    """
+    Perform Kruskal-Wallis test to evaluate differences in medians across groups
+    and print the results.
+
+    Parameters:
+    - dataframe (pd.DataFrame): Input DataFrame containing the data.
+    - group_col (str): Column name representing the group/category.
+    - value_col (str): Column name representing the values to test.
+    """
+    # Organize data by groups
+    groups = [dataframe[dataframe[group_col] == name][value_col] for name in dataframe[group_col].unique()]
+    
+    # Perform Kruskal-Wallis Test
+    kruskal_stat, kruskal_p = kruskal(*groups)
+    print(f"Kruskal-Wallis Test: H-statistic = {kruskal_stat}, p-value = {kruskal_p}")
+    
+    # Interpret results
+    if kruskal_p < 0.05:
+        print("Significant differences found between groups.")
+    else:
+        print("No significant differences between groups.")
+
+
+
+def perform_posthoc_dunn_and_plot(dataframe, group_col, value_col, p_adjust_method='bonferroni'):
+    """
+    Perform Dunn's test for pairwise comparisons and plot the heatmap of p-values 
+    along with the bar plot of medians.
+
+    Parameters:
+    - dataframe (pd.DataFrame): Input DataFrame containing the data.
+    - group_col (str): Column name representing the group/category.
+    - value_col (str): Column name representing the values for comparison.
+    - p_adjust_method (str): Method to adjust p-values for multiple testing (default: 'bonferroni').
+    """
+    # Compute medians for each group
+    medians = dataframe.groupby(group_col)[value_col].median()
+    
+    # Perform Dunn's test
+    posthoc = posthoc_dunn(
+        dataframe, 
+        val_col=value_col, 
+        group_col=group_col, 
+        p_adjust=p_adjust_method
+    )
+    
+    # Create subplots for the heatmap and bar plot
+    fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+
+    # Heatmap for Dunn's test p-values
+    sns.heatmap(
+        posthoc, 
+        annot=True, 
+        fmt=".2e", 
+        cmap="coolwarm", 
+        cbar_kws={'label': 'P-value'}, 
+        linewidths=0.5, 
+        ax=axes[0]
+    )
+    axes[0].set_title("Pairwise Dunn's Test P-Values")
+    axes[0].set_xlabel("Target Groups")
+    axes[0].set_ylabel("Target Groups")
+
+    # Bar plot for medians
+    medians.plot(kind='bar', color='skyblue', edgecolor='black', ax=axes[1])
+    axes[1].set_title("Median Log(IC50) Values for Each Target")
+    axes[1].set_xlabel("Target Name")
+    axes[1].set_ylabel("Median Log(IC50)")
+    axes[1].tick_params(axis='x', rotation=90)
+
+    # Adjust layout
+    plt.tight_layout()
+    plt.show()
 
 
 def plot_target_organism_distribution(df):
@@ -553,6 +646,9 @@ def group_similar_targets(hiv):
 
     # Condense "Protein Rev" and "Protein Rev [8-24]"
     hiv_condensed['Target Name'] = hiv_condensed['Target Name'].apply(lambda x: 'Protein Rev' if 'Protein Rev' in x else x)
+
+    #creating log IC50 column for further analyses
+    hiv_condensed['Log_IC50'] = hiv_condensed['IC50 (nM)'].apply(lambda x: np.log(x))
     
     return hiv_condensed
 
