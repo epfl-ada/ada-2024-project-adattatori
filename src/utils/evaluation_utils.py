@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
+import plotly.express as px
 
 
 def plot_target_organism_distribution(df):
@@ -19,6 +20,29 @@ def plot_target_organism_distribution(df):
     import matplotlib.pyplot as plt
     plt.ylabel('')  # Optional: Remove y-axis label for better visualization
     plt.show()
+
+def plot_target_organism_distribution_plotly(df):
+    # Filter out rows with missing values in the specified column
+    df = df[df['Target Source Organism According to Curator or DataSource'].notna()]
+    
+    # Count occurrences of each organism
+    category_counts = df['Target Source Organism According to Curator or DataSource'].value_counts()
+    category_counts = category_counts[category_counts.index != 'nan']
+    category_counts = category_counts[:15]  # Select the top 15 categories
+
+    # Convert the data to a DataFrame for Plotly
+    category_data = category_counts.reset_index()
+    category_data.columns = ['Organism', 'Count']
+
+    # Create an interactive pie chart
+    fig = px.pie(category_data, 
+                 values='Count', 
+                 names='Organism', 
+                 title='Top 15 Target Source Organisms',
+                 hole=0.4)  # Optional: Add a donut hole for style
+
+    # Show the interactive plot
+    fig.show()
 
 def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"], ax=None):
     """
@@ -60,6 +84,62 @@ def plot_metric_availability(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC
     ax.set_xlabel("Metric")
     ax.set_ylabel("Percentage of Rows with Defined Values")
     ax.set_ylim(0, 100)
+
+def plot_metric_availability_with_plotly(df, metrics=["Ki (nM)", "IC50 (nM)", "Kd (nM)", "EC50 (nM)"]):
+    """
+    Cleans the data by converting threshold values (e.g., '>50000', '<1') to NaN, calculates, 
+    and plots the distribution of rows with defined values for each specified metric using Plotly.
+    
+    Parameters:
+    - df (pd.DataFrame): The BindingDB DataFrame containing the metrics.
+    - metrics (list of str): List of metric columns to analyze.
+    
+    Returns:
+    - pd.DataFrame: A DataFrame with the count and percentage of rows with non-NaN values for each metric.
+    """
+    # Replace threshold values (e.g., '>50000', '<1') with NaN across the specified metrics
+    df[metrics] = df[metrics].replace({r'^>.*$': np.nan, r'^<.*$': np.nan}, regex=True)
+    
+    # Convert each metric column to numeric, coercing errors (non-numeric values become NaN)
+    for metric in metrics:
+        df[metric] = pd.to_numeric(df[metric], errors='coerce')
+    
+    # Initialize a dictionary to store counts of non-NaN values for each metric
+    metric_counts = {metric: df[metric].notna().sum() for metric in metrics}
+    total_rows = len(df)
+    
+    # Create a DataFrame to show counts and percentages
+    availability_df = pd.DataFrame({
+        "Metric": metric_counts.keys(),
+        "Count": metric_counts.values(),
+        "Percentage": [(count / total_rows) * 100 for count in metric_counts.values()]
+    })
+    
+    # Create an interactive bar chart using Plotly
+    fig = px.bar(
+        availability_df,
+        x="Metric",
+        y="Percentage",
+        title="Availability of Each Metric in BindingDB",
+        labels={"Percentage": "Percentage of Rows with Defined Values", "Metric": "Metric"},
+        text="Percentage",
+        color="Metric",
+    )
+    
+    # Update layout for better visualization
+    fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
+    fig.update_layout(
+        yaxis=dict(range=[0, 100], title="Percentage (%)"),
+        xaxis=dict(title="Metric"),
+        showlegend=False,
+        width=800,
+        height=500,
+    )
+    
+    # Show the interactive plot
+    fig.show()
+    
+    return availability_df
     
 
 def plot_overlap_matrix(df, columns=['Ki (nM)', 'IC50 (nM)', 'Kd (nM)', 'EC50 (nM)'], ax=None):
@@ -86,6 +166,56 @@ def plot_overlap_matrix(df, columns=['Ki (nM)', 'IC50 (nM)', 'Kd (nM)', 'EC50 (n
         ax = plt.gca()
     sns.heatmap(overlap_matrix, annot=annot_matrix, fmt="", cmap="YlOrBr", cbar_kws={'label': 'Overlap Percentage (%)'}, ax=ax)
     ax.set_title("Pairwise Overlap Matrix of Ki, IC50, Kd, EC50")
+
+def plot_overlap_matrix_with_plotly(df, columns=['Ki (nM)', 'IC50 (nM)', 'Kd (nM)', 'EC50 (nM)']):
+    """
+    Calculates and plots the overlap matrix between the specified columns using Plotly.
+    
+    Parameters:
+    - df (pd.DataFrame): The BindingDB DataFrame containing the metrics.
+    - columns (list of str): List of metric columns to analyze.
+    
+    Returns:
+    - pd.DataFrame: The calculated overlap matrix as a DataFrame.
+    """
+    # Create an overlap matrix to compare the metrics
+    overlap_matrix = pd.DataFrame(index=columns, columns=columns, dtype=float)
+
+    # Calculate pairwise overlaps as percentages
+    for col1 in columns:
+        for col2 in columns:
+            # Count non-null values in both columns (overlap)
+            overlap = df[col1].notnull() & df[col2].notnull()
+            # Calculate overlap percentage relative to the average non-null counts in col1 and col2 for symmetry
+            overlap_percentage = overlap.sum() / ((df[col1].notnull().sum() + df[col2].notnull().sum()) / 2) * 100
+            overlap_matrix.loc[col1, col2] = overlap_percentage
+            overlap_matrix.loc[col2, col1] = overlap_percentage  # Ensure symmetry
+
+    # Reset index for Plotly compatibility
+    overlap_matrix = overlap_matrix.reset_index().melt(id_vars="index", var_name="Metric 1", value_name="Overlap (%)")
+    overlap_matrix.rename(columns={"index": "Metric 2"}, inplace=True)
+
+    # Create an interactive heatmap with Plotly
+    fig = px.imshow(
+        overlap_matrix.pivot(index="Metric 1", columns="Metric 2", values="Overlap (%)"),
+        text_auto=".2f",
+        color_continuous_scale="YlOrBr",
+        title="Pairwise Overlap Matrix of Metrics",
+        labels={"color": "Overlap Percentage (%)"},
+    )
+
+    # Customize layout for better appearance
+    fig.update_layout(
+        xaxis=dict(title="Metric 1"),
+        yaxis=dict(title="Metric 2"),
+        height=600,
+        width=600,
+    )
+    
+    # Show the figure
+    fig.show()
+    
+    return overlap_matrix
 
 
 def plot_organism_counts(df):
@@ -144,6 +274,28 @@ def plot_most_targeted_proteins(df, organism = 'Human immunodeficiency virus 1',
     plt.xlabel("Target Name")
     plt.ylabel("Count")
     plt.show()
+
+def plot_most_targeted_proteins_plotly(df, organism='Human immunodeficiency virus 1', n=20):
+    df = df[df['Target Source Organism According to Curator or DataSource'] == organism]
+    
+    if organism == 'Human immunodeficiency virus 1':
+        df['Target Name'] = df['Target Name'].str.replace("Dimer of ", "", regex=False)
+        df['Target Name'] = df['Target Name'].str.replace("Reverse transcriptase protein", "Reverse transcriptase", regex=False)
+    
+    targeted = df['Target Name'].value_counts().head(n).reset_index()
+    targeted.columns = ['Target Name', 'Count']
+
+    # Plot using Plotly
+    fig = px.bar(targeted, x='Target Name', y='Count', color='Target Name', 
+                 title=f'Most Targeted {organism} Proteins', 
+                 labels={'Target Name': 'Target Name', 'Count': 'Count'},
+                 color_discrete_sequence=px.colors.qualitative.Set1)
+    fig.update_layout(
+        width=1000,  # Adjust the width here
+        height=1000   # Optional: Adjust the height
+    )
+    fig.update_layout(xaxis_tickangle=90)
+    fig.show()
 
 def plot_publications_per_year(df):
     # Let's see the number of publications every year
@@ -348,3 +500,63 @@ def plot_ic50_by_drug_class(data, drug_class_col='Drug_Class', ic50_col='IC50 (n
     plt.ylabel("IC50 (nM)")
     plt.tight_layout()
     plt.show()
+
+
+def group_similar_targets(hiv):
+    """
+    Groups similar protein targets in the HIV dataset by condensing overlapping or redundant names.
+
+    Args:
+        hiv (DataFrame): A pandas DataFrame containing a column named 'Target Name'.
+
+    Returns:
+        DataFrame: A new DataFrame with condensed target names.
+    """
+    # Create a copy of the dataset to avoid modifying the original
+    hiv_condensed = hiv.copy()
+    
+    # Remove "Dimer of " from Target Names
+    hiv_condensed['Target Name'] = hiv_condensed['Target Name'].str.replace("Dimer of ", "", regex=False)
+    
+    # Replace "Reverse transcriptase protein" with "Reverse transcriptase"
+    hiv_condensed['Target Name'] = hiv_condensed['Target Name'].str.replace("Reverse transcriptase protein", "Reverse transcriptase", regex=False)
+    
+    # Condense "Gag-Pol polyprotein"
+    hiv_condensed['Target Name'] = hiv_condensed['Target Name'].apply(lambda x: 'Gag-Pol polyprotein' if 'Gag-Pol' in x else x)
+    
+    # Condense "Reverse transcriptase" and related terms
+    hiv_condensed['Target Name'] = hiv_condensed['Target Name'].apply(lambda x: 'Reverse transcriptase' if 'Reverse transcriptase' in x else x)
+
+    # Condense "Protein Rev" and "Protein Rev [8-24]"
+    hiv_condensed['Target Name'] = hiv_condensed['Target Name'].apply(lambda x: 'Protein Rev' if 'Protein Rev' in x else x)
+    
+    return hiv_condensed
+
+def create_ic50_boxplot_plotly(dataframe):
+    """
+    Creates a boxplot for IC50 values against Target Name using Plotly.
+
+    Args:
+        dataframe (DataFrame): A pandas DataFrame containing 'Target Name' and 'IC50 (nM)' columns.
+
+    Returns:
+        Plotly Figure: A Plotly boxplot figure.
+    """
+    # Create the boxplot
+    fig = px.box(dataframe, 
+                 x='Target Name', 
+                 y='IC50 (nM)', 
+                 title='IC50 vs Target Name', 
+                 labels={'Target Name': 'Target Name', 'IC50 (nM)': 'IC50 (nM)'},
+                 color='Target Name')  # Color by target name
+
+    # Update layout for log scale and x-axis label rotation
+    fig.update_layout(
+        yaxis_type="log",  # Apply log scale to the y-axis
+        xaxis_tickangle=90,  # Rotate x-axis labels
+        title="IC50 vs Target Name",
+        width=1000,  # Adjust the width here
+        height=1000   # Optional: Adjust the height
+    )
+    
+    return fig
