@@ -680,3 +680,61 @@ def create_ic50_boxplot_plotly(dataframe):
     )
     
     return fig
+
+
+def run_pca(dataframe, n_components=0.9):
+    """
+    Performs PCA on the given DataFrame and returns the reduced data and loadings.
+
+    Parameters:
+        dataframe (pd.DataFrame): The DataFrame containing numerical features for PCA.
+        n_components (float or int): The number of components to keep, or the percentage of variance to explain.
+
+    Returns:
+        tuple: (reduced_data, loadings_df)
+            - reduced_data: Transformed data after PCA.
+            - loadings_df: DataFrame with PCA loadings (coefficients) for each component.
+    """
+    pca = PCA(n_components=n_components)
+    reduced_data = pca.fit_transform(dataframe)  # Run PCA
+    components = pca.components_
+    feature_names = dataframe.columns
+    loadings_df = pd.DataFrame(components, columns=feature_names, 
+                               index=[f"PC{i+1}" for i in range(len(components))])  # Create coefficients DataFrame
+    explained_variance = pca.explained_variance_ratio_
+    return reduced_data, loadings_df, explained_variance
+
+
+def compute_pca_feature_contributions(explained_variance, loadings_df, top_n_components=6):
+    """
+    Computes the absolute feature contributions based on PCA loadings and explained variance.
+
+    Parameters:
+        Explained variance ratio
+        loadings_df (pd.DataFrame): DataFrame containing PCA loadings.
+        top_n_components (int): Number of principal components to include in the computation.
+
+    Returns:
+        pd.Series: A series containing sorted feature contributions.
+    """
+    loadings_df_absv = loadings_df.apply(np.abs)  # Absolute values of loadings
+
+    # Compute contributions for the specified number of top components
+    contributions = sum(
+        loadings_df_absv.T[f"PC{i+1}"] * explained_variance[i] 
+        for i in range(top_n_components)
+    )
+    return contributions.sort_values()
+
+def get_quantiles(frc, numerical_df_pca):
+    q1, q3 = np.quantile(frc, [0.25, 0.75])
+    numerical_df_pca['frc_class'] = 1  # Initialize all values to 2
+    numerical_df_pca.loc[numerical_df_pca['FractionCSP3'] < q1, 'frc_class'] = 0  # Assign 0 where CSP3 < q1
+    numerical_df_pca.loc[numerical_df_pca['FractionCSP3'] > q3, 'frc_class'] = 2  # Assign 1 where CSP3 > q3
+
+def divide_df(non_numerical_df, numerical_df_pca):
+    non_numerical_df['frc_class'] = numerical_df_pca['frc_class'].values
+    frc0 = non_numerical_df[non_numerical_df['frc_class'] == 0]
+    frc1 = non_numerical_df[non_numerical_df['frc_class'] == 1]
+    frc2 = non_numerical_df[non_numerical_df['frc_class'] == 2]
+    return frc0, frc1, frc2
