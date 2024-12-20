@@ -6,7 +6,7 @@ Here is the URL to our data story: https://federicorossi498.github.io/adattatori
 
 ## Abstract
 Humans, as social beings, often form meaningful romantic relationships. However, such bonds come with risks, including the transmission of infections. Sexually transmitted diseases (STDs) remain a significant global health issue, with the World Health Organization recognizing their eradication as a key objective in its 2030 agenda [1]. Among these diseases, HIV-1 stands out due to its enduring impact.
-Interestingly, the concept of relationships extends beyond humans to the chemical realm, where compounds are designed to bond with their “target proteins”. This project aims to explore how these chemical “couples” contribute to the figth against HIV-1. By studying how the affinity of these drug-target pairs is influenced by both the target protein and the ligand's features, in our data story we try to shed a light on what makes a "strong" chemical couple.
+Interestingly, the concept of relationships extends beyond humans to the chemical realm, where compounds are designed to bond with their “target proteins”. This project aims to explore how these chemical “couples” contribute to the fight against HIV-1. By studying how the affinity of these drug-target pairs is influenced by both the target protein and the ligand's features, in our data story we try to shed a light on what makes a "strong" chemical couple.
 
 References
 [1] https://www.who.int/publications/i/item/9789240053779
@@ -39,7 +39,7 @@ We will not be using any additional datasets for our analysis. We consider that 
     - Step 1.2: Statitical test to study the normality of the distribution of the data for each target for subsequent analysis: Kolmogorov-Smirnov test is employed. Almost all target's LogIC50 is confirmed to be not normally distributed.
     - Step 1.3: Two different statistical test to prove how the median varies among the targets: Kruskal-Wallis test and post-hoc Dunn’s test. We use these tests and the median metric because the distribution are not normal. The latter shows that at the standard significance threshold of 0.05, the Gag-Pol polyprotein emerges as a standout, with significantly lower values of LogIC50 than other targets.
 
-- Step 2: Focus on ligands targeting Gag-Pol polyprotein: these are our weapons against the virus, and more specifically against the target that seems to show an overall better affinity, that is the Gag-Pol polyprotein.
+- Step 2: Focus on ligands: these are our weapons against the virus, and more specifically against the target that seems to show an overall better affinity, that is the Gag-Pol polyprotein.
     - Step 2.1: Expansion of the dataset with RDKit obtained molecular features
     - Step 2.2: PCA analysis:
         - Step 2.2.1: Obtain the absolute molecular features contributions to the first five principal components.
