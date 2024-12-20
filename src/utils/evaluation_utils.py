@@ -8,6 +8,8 @@ import plotly.express as px
 from scipy.stats import kstest
 from scipy.stats import kruskal
 from scikit_posthocs import posthoc_dunn
+import plotly.graph_objects as go
+
 
 def perform_ks_test(dataframe, group_col, value_col):
     """
@@ -651,6 +653,50 @@ def group_similar_targets(hiv):
     hiv_condensed['Log_IC50'] = hiv_condensed['IC50 (nM)'].apply(lambda x: np.log(x))
     
     return hiv_condensed
+
+def create_ic50_boxplot(dataframe):
+    """
+    Creates a boxplot for IC50 values against Target Name using Matplotlib and Seaborn.
+
+    Args:
+        dataframe (DataFrame): A pandas DataFrame containing 'Target Name' and 'IC50 (nM)' columns.
+
+    Returns:
+        None: Displays the plot.
+    """
+    # Set the figure size
+    plt.figure(figsize=(14, 8))
+
+    # Create the boxplot using Seaborn
+    sns.boxplot(
+        x='Target Name',
+        y='IC50 (nM)',
+        data=dataframe,
+        hue='Target Name',  # Assign hue to the x variable
+        palette="Set2",
+        dodge=False  # Disable dodging since we're not comparing multiple groups
+    )
+
+    # Remove the legend as it's redundant
+    plt.legend([], [], frameon=False)
+
+    # Set the y-axis to a logarithmic scale
+    plt.yscale('log')
+
+    # Add labels and title
+    plt.xlabel('Target Name', fontsize=12)
+    plt.ylabel('IC50 (nM)', fontsize=12)
+    plt.title('IC50 vs Target Name', fontsize=16)
+
+    # Rotate x-axis labels for better readability
+    plt.xticks(rotation=90, fontsize=10)
+
+    # Adjust layout for spacing
+    plt.tight_layout()
+
+    # Show the plot
+    plt.show()
+
 
 def create_ic50_boxplot_plotly(dataframe):
     """
