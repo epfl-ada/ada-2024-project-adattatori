@@ -855,7 +855,7 @@ def perform_posthoc_dunn_and_plot_plotly(dataframe, group_col, value_col, p_adju
     posthoc_df = pd.DataFrame(posthoc, index=posthoc.index, columns=posthoc.columns)
 
     # Format the p-values for annotations
-    annotations = posthoc_df.applymap(lambda x: f"{x:.2e}")
+    annotations = posthoc_df.map(lambda x: f"{x:.2e}")
 
     # Create the heatmap for p-values with annotations
     heatmap = go.Heatmap(
