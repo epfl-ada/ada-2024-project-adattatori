@@ -52,6 +52,7 @@ We will not be using any additional datasets for our analysis. We consider that 
  
 - Step 3: Manual inspection of findings.
 
+- Extra step: To validate our results, we perform the analysis step1-step3 but with the dataset divided into 80% for training and 20% for testing. This approach was used to evaluate potential imbalances in the datas and to be sure our findings were valid. All these analyses are grouped in the train_test_nb.ipynb notebook.
 
 ## Organization of the repository
 The structure of our repository is the following:
