@@ -2,11 +2,11 @@
 
 ## URL to the data story
 
-https://federicorossi498.github.io/adattatori-web/
+Here is the URL to our data story: https://federicorossi498.github.io/adattatori-web/
 
 ## Abstract
-Humans, as social beings, often form meaningful romantic relationships. However, such bonds come with risks, including the transmission of infections. Sexually transmitted diseases (STDs) remain a significant global health issue, with the World Health Organization recognizing their eradication as a key objective in its 2030 agenda. Among these diseases, HIV stands out due to its enduring impact.
-Interestingly, the concept of relationships extends beyond humans to the chemical realm, where compounds are designed to bond with their “target proteins”. This project aims to explore how these chemical “couples” have contributed to combating STDs, particularly HIV. By tracing affinity levels, we aim to analyze changes in drug affinity for their targets due to different features. Additionally, our analysis will expand to ligands to better understand how drug development has progressed, focusing on ligands with varying properties. 
+Humans, as social beings, often form meaningful romantic relationships. However, such bonds come with risks, including the transmission of infections. Sexually transmitted diseases (STDs) remain a significant global health issue, with the World Health Organization recognizing their eradication as a key objective in its 2030 agenda [1]. Among these diseases, HIV-1 stands out due to its enduring impact.
+Interestingly, the concept of relationships extends beyond humans to the chemical realm, where compounds are designed to bond with their “target proteins”. This project aims to explore how these chemical “couples” contribute to the figth against HIV-1. By studying how the affinity of these drug-target pairs is influenced by both the target protein and the ligand's features, in our data story we try to shed a light on what makes a "strong" chemical couple.
 
 References
 [1] https://www.who.int/publications/i/item/9789240053779
@@ -39,9 +39,17 @@ We will not be using any additional datasets for our analysis. We consider that 
     - Step 1.2: Statitical test to study the normality of the distribution of the data for each target for subsequent analysis: Kolmogorov-Smirnov test is employed. Almost all target's LogIC50 is confirmed to be not normally distributed.
     - Step 1.3: Two different statistical test to prove how the median varies among the targets: Kruskal-Wallis test and post-hoc Dunn’s test. We use these tests and the median metric because the distribution are not normal. The latter shows that at the standard significance threshold of 0.05, the Gag-Pol polyprotein emerges as a standout, with significantly lower values of LogIC50 than other targets.
 
-- Step 2: Focus on ligands targeting Gag-Pol polyprotein: these are our weapons against the virus, and more specifically against the target that seems to show an overall better affinity, that is the Gag-Pol polyprotein
-
-- Step 3: Study the structure of ligands in detail, thanks to the Python Rdkit library (after an additional cleaning). Extraction of molecular features from the SMILES string permitted us to study the correlation between these features and binding affinity. For now, we have not uncovered any significant relationships. This might lead to further exploration of other features for P3 and other Rdkit functionalities. Furthermore, we performed K-means clustering on the similarity matrix of fingerprints.
+- Step 2: Focus on ligands targeting Gag-Pol polyprotein: these are our weapons against the virus, and more specifically against the target that seems to show an overall better affinity, that is the Gag-Pol polyprotein.
+    - Step 2.1: Expansion of the dataset with RDKit obtained molecular features
+    - Step 2.2: PCA analysis:
+        - Step 2.2.1: Obtain the absolute molecular features contributions to the first five principal components.
+        - Step 2.2.2: Compute a total contribution score by weighing the features contributions on the percentage of variance explained by each principal component.
+        - Step 2.2.3: Extraction of the most relevant feature, that was found to be the `number of sp3 hybridized carbons`
+    - Step 2.3: Study of the relationship between the IC50 metric and different groups of values of the selected feature.
+    - Step 2.4: Normality test (Kolmogorov-Smirnov) to assess groups' distributions normality. Almost all distribution are not normal.
+    - Step 2.5: Kruskal-Wallis test and post-hoc Dunn's test to assess differences in the IC50 medians of the groups: an intermediate number of sp3 hybridized carbons seems to be associated with a better binding affinity.
+ 
+- Step 3: Manual inspection of findings.
 
 
 ## Organization of the repository
@@ -50,8 +58,7 @@ The structure of our repository is the following:
 ├── data                        <- BindingSTD dataset
 │
 ├── src                         <- Source code
-│   ├── data                            <- Data directory 
-│   ├── models                          <- Model directory
+│   ├── data                            <- Data directory
 │   ├── utils                           <- Utility directory
 │   ├── scripts                         <- Shell scripts
 │
@@ -62,34 +69,22 @@ The structure of our repository is the following:
 ├── environment.yml             <- File for installing python dependencies
 └── README.md
 ```
-In the 'utils' folder there are 3 files: 'data_utils.py' contains the functions that can be applied to the dataset to format it in a usable shape; 'evaluation_utils.py' contains the functions used to plot the results.
-In the 'tests' folder we added all the analysis and explorations that we performed.  
-The 'result.ipynb' main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
-In 'environment.yml' file there are all the python dependicies needed to run our code. 
+In the `utils` folder there are 2 files: `data_utils.py` contains the functions that can be applied to the dataset to format it in a usable shape; `evaluation_utils.py` contains the functions used to plot the results and to perform statistical tests.
+In the `tests` folder we added all the analysis and explorations that we performed.  
+The `result.ipynb` main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
+In `environment.yml` file there are all the python dependicies needed to run our code. In the `data` folder there are two files: `dataloader.py` contains the data loading functions; `std_extraction.ipynb` contains the workflow to obtain the STDs dataset that we use also in the principal notebook. The `scripts` folder contains the `rdkit_extraction.py` file, that contains some useful methods to leverage the RDKit library for our analyses
 
 
-## Proposed timeline 
+## Contributions of all group members
 
-| Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
-|-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| Week 12 |**Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
-|       | **Exploration of Protein-Ligand Binding**                                                                  | Explore amino acid sequences of target proteins and identify relevant structures for predicting binding affinities. |
-| Week 13 | 
-|       | **Website Development**                                                                                  | Start working on the webpage layout and design for presenting the findings in an engaging way. |
-| Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
-|       | **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
-|       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
+**Leonor**: Graphs plotting, website development and data story writing.
 
+**Elisa**: Website development, data story and README writing.
 
-## Organization within the team
+**Mattia**: Ligands' features analysis, explorations with RDKit, final notebook writing.
 
-**Mattia**: Further exploration to uncover correlations between features and affinity.  
+**Federico**: Website development, final notebook writing, code quality control.
 
-**Federico**: Creativity ideation of the webpage format. 
+**Simone**: Whole dataset explorations, protein targets analysis, final notebook writing.
 
-**Simone**: Analysis of the drug discovery retrieving interesting features to make comparisons.
-
-**Leonor**: Creativity ideation of the webpage and formatting of the repository for its creation.
-
-**Elisa**: Description of the datastory, enlargement of the analysis about proteins.  
 
