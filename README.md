@@ -76,12 +76,23 @@ In the `tests` folder we added all the analysis and explorations that we perform
 The `result.ipynb` main file consists for now of the exploratory data analysis that has been performed in the scope of milestone 2.
 In `environment.yml` file there are all the python dependicies needed to run our code. In the `data` folder there are two files: `dataloader.py` contains the data loading functions; `std_extraction.ipynb` contains the workflow to obtain the STDs dataset that we use also in the principal notebook. The `scripts` folder contains the `rdkit_extraction.py` file, that contains some useful methods to leverage the RDKit library for our analyses
 
+## Followed timeline 
+
+| Week  | Objective/Task                                                                                           | Description/Details                                                                                      |
+|-------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| Week 12 |**Data Story Creation**                                                                                 | Begin creating a data story that aligns with the research question. The narrative will communicate key insights. |
+|       | **Exploration of Protein Targets**                                                                  | Explore target proteins and identify relevant structures for predicting binding affinities. |
+| Week 13 | **Website Development**                                                                                  | Start working on the webpage layout and design for presenting the findings in an engaging way. |
+|       | **Exploration of Ligand features**                                                                  | Explore ligands and undercover relevant features influencing affinity. |
+| Week 14 | **Finalizing Data Story Webpage**                                                                         | Complete the webpage, ensuring it is cohesive and interactive with the data story clearly presented. |
+|       | **Visualizations**                                                                                        | Host interactive visualizations that clearly present the results of the analysis. |
+|       | **Final Review**                                                                                         | Perform final review and testing of the webpage to ensure functionality and engagement. |
 
 ## Contributions of all group members
 
-**Leonor**: Graphs plotting, website development and data story writing.
+**Leonor**: Graphs plotting, website development and data story writing, targets explorations.
 
-**Elisa**: Website development, data story and README writing.
+**Elisa**: Website development, data story and README writing, ligands explorations.
 
 **Mattia**: Ligands' features analysis, explorations with RDKit, final notebook writing.
 
