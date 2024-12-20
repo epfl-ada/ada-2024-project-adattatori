@@ -9,6 +9,9 @@ from scipy.stats import kstest
 from scipy.stats import kruskal
 from scikit_posthocs import posthoc_dunn
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import pandas as pd
+from scikit_posthocs import posthoc_dunn
 
 
 def perform_ks_test(dataframe, group_col, value_col):
@@ -821,4 +824,89 @@ def sp3_boxplot_plotly(data, x_column, y_column):
         xaxis_title=x_column,
         yaxis_title=y_column
     )
+    return fig
+
+def perform_posthoc_dunn_and_plot_plotly(dataframe, group_col, value_col, p_adjust_method='bonferroni'):
+    """
+    Perform Dunn's test for pairwise comparisons and plot the heatmap of p-values 
+    along with the bar plot of medians using Plotly, with annotations on the heatmap.
+
+    Parameters:
+    - dataframe (pd.DataFrame): Input DataFrame containing the data.
+    - group_col (str): Column name representing the group/category.
+    - value_col (str): Column name representing the values for comparison.
+    - p_adjust_method (str): Method to adjust p-values for multiple testing (default: 'bonferroni').
+
+    Returns:
+    - fig: A Plotly Figure containing the heatmap and bar plot as subplots.
+    """
+    # Compute medians for each group
+    medians = dataframe.groupby(group_col)[value_col].median()
+
+    # Perform Dunn's test
+    posthoc = posthoc_dunn(
+        dataframe, 
+        val_col=value_col, 
+        group_col=group_col, 
+        p_adjust=p_adjust_method
+    )
+
+    # Convert Dunn's test results into a DataFrame for heatmap
+    posthoc_df = pd.DataFrame(posthoc, index=posthoc.index, columns=posthoc.columns)
+
+    # Format the p-values for annotations
+    annotations = posthoc_df.applymap(lambda x: f"{x:.2e}")
+
+    # Create the heatmap for p-values with annotations
+    heatmap = go.Heatmap(
+        z=posthoc_df.values,
+        x=posthoc_df.columns,
+        y=posthoc_df.index,
+        colorscale='RdBu',  # Use a valid Plotly colorscale
+        colorbar=dict(title="P-value"),
+        hovertemplate="P-value: %{z:.2e}<extra></extra>",
+        text=annotations.values,  # Add the formatted annotations
+        texttemplate="%{text}",  # Display the annotations
+        textfont=dict(color="white"),  # Set text color to white
+    )
+
+    # Create the bar plot for medians
+    barplot = go.Bar(
+        x=medians.index,
+        y=medians.values,
+        marker_color='skyblue',
+        marker_line=dict(color='black', width=1),
+        name="Median Log(IC50)",
+        hovertemplate="Median Log(IC50): %{y:.2f}<extra></extra>"
+    )
+
+    # Create the figure with subplots
+    fig = make_subplots(
+        rows=1, cols=2,
+        subplot_titles=("Pairwise Dunn's Test P-Values", "Median Log(IC50) Values for Each Target"),
+        column_widths=[0.6, 0.4],
+        shared_yaxes=False
+    )
+
+    # Add heatmap to the first subplot
+    fig.add_trace(heatmap, row=1, col=1)
+
+    # Add bar plot to the second subplot
+    fig.add_trace(barplot, row=1, col=2)
+
+    # Update layout
+    fig.update_layout(
+        title="Dunn's Test and Median Log(IC50) Analysis",
+        xaxis=dict(title="Target Groups"),
+        yaxis=dict(title="Target Groups"),
+        xaxis2=dict(title="Target Name"),
+        yaxis2=dict(title="Median Log(IC50)"),
+        height=800,
+        width=1200,
+        showlegend=False
+    )
+
+    # Rotate x-axis labels for bar plot
+    fig.update_xaxes(tickangle=90, row=1, col=2)
+
     return fig
