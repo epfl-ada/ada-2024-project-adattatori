@@ -42,6 +42,7 @@ We will not be using any additional datasets for our analysis. We consider that 
 - Step 2: Focus on ligands: these are our weapons against the virus, and more specifically against the target that seems to show an overall better affinity, that is the Gag-Pol polyprotein.
     - Step 2.1: Expansion of the dataset with RDKit obtained molecular features
     - Step 2.2: PCA analysis:
+        - Step 2.2.0: test to prove linearity: the results confirm that the relationship between IC50 and the features is not linear.
         - Step 2.2.1: Obtain the absolute molecular features contributions to the first five principal components.
         - Step 2.2.2: Compute a total contribution score by weighing the features contributions on the percentage of variance explained by each principal component.
         - Step 2.2.3: Extraction of the most relevant feature, that was found to be the `number of sp3 hybridized carbons`
