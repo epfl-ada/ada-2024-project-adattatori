@@ -738,3 +738,41 @@ def divide_df(non_numerical_df, numerical_df_pca):
     frc1 = non_numerical_df[non_numerical_df['frc_class'] == 1]
     frc2 = non_numerical_df[non_numerical_df['frc_class'] == 2]
     return frc0, frc1, frc2
+
+def sp3_hist_plotly(data, bins=100):
+    """
+    Create a histogram using Plotly.
+
+    Parameters:
+    - data: The input data for the histogram (array-like).
+    - bins: Number of bins for the histogram (default is 100).
+
+    Returns:
+    - fig: A Plotly Figure object.
+    """
+    fig = go.Figure(data=[go.Histogram(x=data, nbinsx=bins)])
+    fig.update_layout(
+        xaxis_title='Fraction of total SP3 hybridized carbons',
+        yaxis_title='counts',
+        template='plotly_white'
+    )
+    return fig
+
+def sp3_boxplot_plotly(data, x_column, y_column):
+    """
+    Create a box plot using Plotly.
+
+    Parameters:
+    - data: Pandas DataFrame containing the data.
+    - x_column: The column name for the x-axis (categorical variable).
+    - y_column: The column name for the y-axis (numerical variable).
+
+    Returns:
+    - fig: A Plotly Figure object.
+    """
+    fig = px.box(data, x=x_column, y=y_column, log_y=True, template="plotly_white")
+    fig.update_layout(
+        xaxis_title=x_column,
+        yaxis_title=y_column
+    )
+    return fig
